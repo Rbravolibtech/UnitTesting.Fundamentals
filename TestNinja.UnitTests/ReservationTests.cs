@@ -30,7 +30,7 @@ namespace TestNinja.UnitTests
         {
             //You create a new instance of the User class, representing a user.
             //You create a new instance of the Reservation class and set its MadeBy
-                       
+
             var user = new User();
             var reservation = new Reservation { MadeBy = user };
 
@@ -42,7 +42,7 @@ namespace TestNinja.UnitTests
             // this chedks if the result is True 
             Assert.IsTrue(result);
         }
-        
+
         [Test]
         //You create a new instance of the User class, representing a user who made the reservation.
         // This simulates a reservation made by a specific user.
