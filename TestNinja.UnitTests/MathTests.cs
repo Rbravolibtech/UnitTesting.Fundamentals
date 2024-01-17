@@ -40,9 +40,18 @@ namespace TestNinja.UnitTests
             Assert.That(result, Is.EqualTo(3));
 
         }
-        //This line indicates the start of a test method named 
+
+        //this line of code   [TestCase(2, 1, 2)] make it so you dont have to write the other test
+        //code line 
+
         [Test]
-        public void Max_FirstArgumentIsGreater_ReturnTheFirstArgument()
+        [TestCase(2, 1, 2)]
+        [TestCase(1, 2, 2)]
+        [TestCase(1, 1, 1)]
+
+        //This line indicates the start of a test method named 
+
+        public void Max_WhenCalled_ReturnTheFirstArgument(int a, int b, int expectedResult)
         {
             //var math = new Math();: Creates an instance of a class named Math
 
@@ -52,38 +61,46 @@ namespace TestNinja.UnitTests
             //var result = math.Max(2, 1);: Calls the Max method of the math object with
             //arguments 2 and 1, storing the result in the result variable.
 
-            var result =  _math.Max(2, 1);
+            var result =  _math.Max(a, b);
 
             //Assert.That(result, Is.EqualTo(2));: Uses an assertion to check whether the result
             //is equal to 2.
             //If this condition is true, the test passes; otherwise, it fails.
 
-            Assert.That(result, Is.EqualTo(2));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
+        //CODE BELOW IS COMMENTED OUT AS ITS NO LONGER NEEDED WHEN WRITING CODE MORE SIMPLE AS SHOW ABOVE
+
 
         //This line indicates the start of a test method named second method
-        [Test]
-            public void Max_SecondArgumentISGreater_ReturnTheSecondArgument()
-            {
 
-            //var math = new Math();
+        
+        //[Test]
+        //    public void Max_SecondArgumentISGreater_ReturnTheSecondArgument()
+        //    {
 
-            var result = _math.Max(1, 2);
+        //    //var math = new Math();
 
-            Assert.That(result, Is.EqualTo(2));
-        }
+        //    var result = _math.Max(1, 2);
 
+        //    Assert.That(result, Is.EqualTo(2));
+        //}
+
+
+
+
+        //[Test]
         //This line indicates the start of a test method named 3rd method
-        [Test]
-        public void Max_ArgumentAreEqual_ReturnTheSameArgument()
-        {
 
-            //var math = new Math();
+        //public void Max_ArgumentAreEqual_ReturnTheSameArgument()
+        //{
 
-            var result = _math.Max(1, 1);
+        //    //var math = new Math();
 
-            Assert.That(result, Is.EqualTo(1));
-        }
+        //    var result = _math.Max(1, 1);
 
+        //    Assert.That(result, Is.EqualTo(1));
     }
-}      
+
+}
+     
