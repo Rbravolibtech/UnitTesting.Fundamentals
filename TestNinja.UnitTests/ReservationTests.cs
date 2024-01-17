@@ -34,7 +34,8 @@ namespace TestNinja.UnitTests
             var user = new User();
             var reservation = new Reservation { MadeBy = user };
 
-            //You call the CanBeCancelledBy method on the reservation object, passing the user as an argument.
+            //You call the CanBeCancelledBy method on the reservation object,
+            //passing the user as an argument.
             //The method determines whether the user has the authority to cancel the
             //reservation and returns a boolean result.
             var result = reservation.CanBeCancelledBy(user);
