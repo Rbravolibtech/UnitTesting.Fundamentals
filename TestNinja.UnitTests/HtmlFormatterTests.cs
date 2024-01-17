@@ -11,15 +11,11 @@ namespace TestNinja.UnitTests
         {
             var formatter = new HtmlFormatter();
 
-            var result = formatter.FormatAsBold("abc");
+            var result = formatter.FormatAsBold("Abc");
+
+            // Specific
+            Assert.That(result, Is.EqualTo("<stong>abc</strong>"));
             
-            // Specific 
-            Assert.That(result, Is.EqualTo("<strong>abc</strong>").IgnoreCase);
-            
-            // More general
-            Assert.That(result, Does.StartWith("<strong>").IgnoreCase);
-            Assert.That(result, Does.EndWith("</strong>"));
-            Assert.That(result, Does.Contain("abc"));
         }
         
     }
