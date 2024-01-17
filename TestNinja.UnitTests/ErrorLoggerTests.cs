@@ -16,7 +16,7 @@ namespace TestNinja.UnitTests
                 logger.Log("a");
 
             Assert.That(logger.LastError, Is.EqualTo("a"));
-
+            
         }
 
 
@@ -31,6 +31,30 @@ namespace TestNinja.UnitTests
             Assert.That(() => logger.Log(error), Throws.ArgumentNullException);
             //Assert.That(() => logger.Log(error), Throws.Exception.TypeOf<DivideByZeroException>);
         }
+
+        [Test]
+        public void Log_ValidError_RaiseErrorLoggedEvent()
+        {
+            var logger = new ErrorLogger();
+
+            var id = Guid.Empty;
+            logger.ErrorLogged += (sender, args) => { id = args; };
+
+            logger.Log("a");
+            
+            Assert.That(id, Is.Not.EqualTo(Guid.Empty));
+        }
+
+        //[Test]
+        //public void OnErrorLogged_whenCalled_RaiseEvent()
+        //{
+        //    var logger = new ErrorLogger();
+
+        //    logger.OnErrorLogged();
+
+        //    Assert.That(true);
+        //}
+
 
         }
         
