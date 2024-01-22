@@ -11,6 +11,7 @@ namespace TestNinja.Mocking
     {
         private IFileReader _fileReader;
         private IVideoRepository _repository;
+        public TestNinja.UnitTests.FakeFileReader FileReader;
 
         public VideoService(IFileReader fileReader = null, IVideoRepository repository = null)
         {
@@ -36,6 +37,11 @@ namespace TestNinja.Mocking
                 videoIds.Add(v.Id);
 
             return String.Join(",", videoIds);
+        }
+
+        public string ReadVideoTitle(TestNinja.UnitTests.FakeFileReader fakeFileReader)
+        {
+            throw new NotImplementedException();
         }
     }
 
