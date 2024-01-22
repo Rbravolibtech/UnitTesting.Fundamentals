@@ -1,11 +1,13 @@
 ﻿using System;
+using TestNinja.Mocking;
+
 namespace TestNinja.UnitTests
 {
-	public class FakeFileReader
-	{
-		public FakeFileReader()
-		{
-		}
-	}
+    public class FakeFileReader : IFileReader
+    {
+        public string Read(string path)
+        {
+            return "";
+        }
+    }
 }
-
