@@ -18,7 +18,7 @@ namespace TestNinja.Mocking
             _fileReader = fileReader ?? new FileReader();
             _repository = repository ?? new VideoRepository();
         }
-        
+
         public string ReadVideoTitle()
         {
             var str = _fileReader.Read("video.txt");
@@ -28,11 +28,14 @@ namespace TestNinja.Mocking
             return video.Title;
         }
 
+        //[] => ""
+        // [{}, {}, {}] => "1, 2, 3"
+
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = new List<int>();
 
-            var videos = _repository.GetUnprocessedVideos();                            
+            var videos = _repository.GetUnprocessedVideos();
             foreach (var v in videos)
                 videoIds.Add(v.Id);
 
@@ -44,6 +47,8 @@ namespace TestNinja.Mocking
             throw new NotImplementedException();
         }
     }
+
+  
 
     public class Video
     {
