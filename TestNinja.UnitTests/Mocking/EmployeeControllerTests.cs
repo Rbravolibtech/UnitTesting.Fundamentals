@@ -14,9 +14,11 @@ namespace TestNinja.UnitTests.Mocking
             var controller = new EmployeeController(storage.Object);
 
             controller.DeleteEmployee(1);
-            
-            storage.Verify(s => s.DeleteEmployee(1));
+
+            storage.Verify(storage => storage.DeleteEmployee(1));
         }
-        
     }
+
 }
+        
+    
