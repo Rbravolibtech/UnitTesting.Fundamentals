@@ -11,29 +11,53 @@ namespace TestNinja.UnitTests.Mocking
     [TestFixture]
     public class HouseKeeperServiceTests
     {
+        private string _statementFileName;
+        private object _statementGenerator;
+        private Mock<TestNinja.Mocking.IEmailSender> _emailSender;
+        private Mock<IXtraMessageBox> _messageBox;
+        private HouseKeeperService _service;
+        private Housekeeper _houseKeeper;
 
         [Test]
         public void SendStatementEmails_WhenCalled_GenerateStatements()
         {
-            var unitOfWork = new Mock<IUnitOfWork>();
-            unitOfWork.Setup(uow => uow.Query<Housekeeper>()).Returns(new List<Housekeeper>
-                {
-                new Housekeeper { Email = "a", FullName = "b", Oid =1, StatementEmailBody = "c"}
+            [SetUp]
+            public void SetUp()
+            {
+                _houseKeeper = new Housekeeper { Email = "a", FullName = "b", Oid = 1, StatementEmailBody = "c" };
+
+                var unitOfWork = new Mock<IUnitOfWork>();
+                unitOfWork.Setup(uow => uow.Query<Housekeeper>()).Returns(new List<Housekeeper>
+            {
+                _houseKeeper
             }.AsQueryable());
 
-            var statementGenerator = new Mock<IStatementGenerator>();
-            var emailSender = new Mock<IEmailSender>();
-            var messageBox = new Mock<IXtraMessageBox>();
+                _statementFileName = "fileName";
+                _statementGenerator = new Mock<IStatementGenerator>();
+                _statementGenerator
+                    .Setup(sg => sg.SaveStatement(_houseKeeper.Oid, _houseKeeper.FullName, _statementDate))
+                    .Returns(() => _statementFileName);
 
-         var service = new HouseKeeperService(
-                unitOfWork.Object,
-                statementGenerator.Object,
-                emailSender.Object,
-                messageBox.Object);
+                _emailSender = new Mock<TestNinja.Mocking.IEmailSender>();
+                _messageBox = new Mock<IXtraMessageBox>();
 
-            service.SendStatementEmails(new DateTime(2017, 1, 1));
+                _service = new HouseKeeperService(
+                    unitOfWork.Object,
+                    _statementGenerator.Object,
+                    _emailSender.Object,
+                    _messageBox.Object);
+            }
 
-           statementGenerator.Verify(sg => sg.SaveStatement(1, "b", (new DateTime(2017, 1, 1))));
+
+            [Test]
+            public void SendStatementEmails_WhenCalled_GenerateStatements()
+            {
+                _service.SendStatementEmails(new DateTime(2017, 1, 1));
+
+                _statementGenerator.Verify(sg => sg.SaveStatement(1, "b", (new DateTime(2017, 1, 1))));
+            }
+
+           
 
 
         }
