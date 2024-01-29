@@ -8,10 +8,12 @@ namespace TestNinja.Mocking
     public interface IEmailSender
     {
         void EmailFile(string emailAddress, string emailBody, string filename, string subject);
+        void SendEmail(string v1, string v2, string v3, string v4);
     }
 
     public class EmailSender : IEmailSender
     {
+        [System.Obsolete]
         public void EmailFile(string emailAddress, string emailBody, string filename, string subject)
         {
             var client = new SmtpClient(SystemSettingsHelper.EmailSmtpHost)
@@ -41,6 +43,10 @@ namespace TestNinja.Mocking
 
             File.Delete(filename);
         }
-        
+
+        public void SendEmail(string v1, string v2, string v3, string v4)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

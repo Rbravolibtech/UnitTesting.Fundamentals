@@ -80,6 +80,35 @@ namespace TestNinja.UnitTests.Mocking
                 Times.Never);
         }
 
+
+
+        [Test]
+        public void SendStatementEmails_HouseKeepersEmailIsEmpty_ShouldNotGenerateStatement()
+        {
+            // Set the Housekeeper's email to an empty string.
+            _houseKeeper.Email = "";
+
+            _service.SendStatementEmails(_statementDate);
+
+            // Verify that the SaveStatement method of IStatementGenerator was not called.
+            _statementGenerator.Verify(sg =>
+                sg.SaveStatement(_houseKeeper.Oid, _houseKeeper.FullName, (_statementDate)),
+                Times.Never);
+        }
+
+        [Test]
+        public void SendStatementEmails_StatementFileNameIsWhitespace_ShouldNotEmailTheStatement()
+        {
+            // Set the statement file name to whitespace.
+            _statementFileName = " ";
+
+            // Call the method under test.
+            _service.SendStatementEmails(_statementDate);
+
+            // Verify that the IEmailSender's SendEmail method was not called.
+            _emailSender.Verify(es => es.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        }
+
     }
 }
 
