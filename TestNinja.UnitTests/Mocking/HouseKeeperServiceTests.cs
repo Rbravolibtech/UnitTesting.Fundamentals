@@ -10,6 +10,8 @@ namespace TestNinja.UnitTests.Mocking
     [TestFixture]
     public class HouseKeeperServiceTests
     {
+        // Declare private fields for the test class.
+
         private HouseKeeperService _service;
         private Mock<IStatementGenerator> _statementGenerator;
         private Mock<IEmailSender> _emailSender;
@@ -85,7 +87,7 @@ namespace TestNinja.UnitTests.Mocking
         [Test]
         public void SendStatementEmails_HouseKeepersEmailIsEmpty_ShouldNotGenerateStatement()
         {
-            // Set the Housekeeper's email to an empty string.
+            // Set the Housekeeper's email to an empty string
             _houseKeeper.Email = "";
 
             _service.SendStatementEmails(_statementDate);
@@ -109,7 +111,45 @@ namespace TestNinja.UnitTests.Mocking
             _emailSender.Verify(es => es.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
+        [Test]
+        public void SendStatementEmails_EmailSendingFails_DisplayAMessageBox()
+        {
+            _emailSender.Setup(es => es.EmailFile(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>()
+            )).Throws<Exception>();
+
+            _service.SendStatementEmails(_statementDate);
+
+            _messageBox.Verify(mb => mb.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButtons.OK));
+        }
+
+        private void VerifyEmailNotSent()
+        {
+            // Verify that the _emailSender's EmailFile method was not called.
+            _emailSender.Verify(es => es.EmailFile(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Never);
+        }
+
+        private void VerifyEmailSent()
+        {
+            // Verify that the _emailSender's EmailFile method was called with specific arguments.
+            _emailSender.Verify(es => es.EmailFile(
+                _houseKeeper.Email,
+                _houseKeeper.StatementEmailBody,
+                _statementFileName,
+                It.IsAny<string>()));
+        }
+
     }
 }
+    
+
 
 
